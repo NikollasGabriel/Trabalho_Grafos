@@ -16,7 +16,7 @@ public class Vertice {
     }
 
     public List<Vertice> getPonteiros() {
-        return ponteiros.getNomeVertice();
+        return ponteiros;
     }
 
     public void setPonteiros(Vertice vertice) {
@@ -30,14 +30,11 @@ public class Vertice {
     
     public Vertice(){};
     
-    void exibeLista(){
+    void exibeLista(Vertice bleh){
         
-        int cont = 0;
-        
-        while(cont < ponteiros.size())
-        {
-      
-            
+        System.out.println("Vertice: "+bleh.getNomeVertice());
+        for (Vertice vertice : ponteiros) {
+            System.out.println("Vertices: "+vertice.getNomeVertice());
         }
     }
 }   

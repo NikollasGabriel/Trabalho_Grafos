@@ -31,7 +31,7 @@ public class NovoMain {
         a.setPonteiros(c);
         a.setPonteiros(d);
         
-        System.out.println("Vertices"+a.getPonteiros());
+        a.exibeLista(a);
     }
     
     
