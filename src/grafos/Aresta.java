@@ -4,7 +4,6 @@
 package grafos;
 
 public class Aresta {
-    
     private int numeroAresta;
     private Vertice vertice;
 

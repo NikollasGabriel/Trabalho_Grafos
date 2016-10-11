@@ -22,10 +22,10 @@ public class Vertice {
         arestas.add(aresta);
     }
     
-    void mostraArestas (Vertice vertice){
-       System.out.println("Vertice: "+vertice.getNomeVertice());
+    void mostraArestas (){
+        System.out.println("Vertice: "+this.getNomeVertice());
         for (Aresta aresta : arestas) {
-            System.out.println("Vertices: "+aresta.getVertice().getNomeVertice());
+            System.out.println("Arestas: "+aresta.getNumeroAresta());
         }
     }
 
