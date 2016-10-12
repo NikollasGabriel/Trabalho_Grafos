@@ -12,11 +12,12 @@ import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class MainTemporario {
 
     public static void main(String[] args) throws Exception {
-        lerGraphXML("C:\\Users\\asus note\\Desktop\\nik.xml"); //MUDE AQUI
+        lerGraphXML("C:\\Users\\Daniel\\Desktop\\nik.xml"); //MUDE AQUI
         criarGraphML();
     }
     
@@ -57,16 +58,29 @@ public class MainTemporario {
     
     public static void criarGraphML () throws Exception {
         
-        String localCriacao = "C:\\Users\\asus note\\Desktop\\"; //MUDE AQUI
+        String localCriacao = "C:\\Users\\Daniel\\Desktop\\nik.xml"; //MUDE AQUI
         String nomeArquivo = "novo.xml";
         String caminhoArquivo = localCriacao+nomeArquivo;
         
         OutputStream saida = new FileOutputStream(caminhoArquivo);
         TinkerGraph grafo  = new TinkerGraph();
  
-        Vertex origemAresta = grafo.addVertex("1");
-        Vertex destinoAresta = grafo.addVertex("2");
-        grafo.addEdge("3", origemAresta, destinoAresta, "Aresta 1");
+        Scanner input = new Scanner(System.in);
+        int entradaNumVertice;
+        
+        System.out.println("-----------------------");
+        System.out.println("Quantos Vertices:");
+        entradaNumVertice = input.nextInt();
+        
+        for(int i=0; i== entradaNumVertice; i++){           
+            Vertex origemAresta = grafo.addVertex(1);
+            Vertex destinoAresta = grafo.addVertex("2");
+            grafo.addEdge("3", origemAresta, destinoAresta, "Aresta 1");            
+        }
+        
+        //Vertex origemAresta = grafo.addVertex(entradaNumVertice);
+       // Vertex destinoAresta = grafo.addVertex("2");
+       // grafo.addEdge("3", origemAresta, destinoAresta, "Aresta 1");
  
         GraphMLWriter writer = new GraphMLWriter(grafo);
         writer.outputGraph(saida);
