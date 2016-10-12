@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class MainTemporario {
 
     public static void main(String[] args) throws Exception {
-        lerGraphXML("C:\\Users\\Daniel\\Desktop\\nik.xml"); //MUDE AQUI
+        lerGraphXML("C:\\Users\\asus note\\Desktop\\nik.xml"); //MUDE AQUI C:\\Users\\Daniel\\Desktop\\nik.xml
         criarGraphML();
     }
     
@@ -58,7 +58,7 @@ public class MainTemporario {
     
     public static void criarGraphML () throws Exception {
         
-        String localCriacao = "C:\\Users\\Daniel\\Desktop\\nik.xml"; //MUDE AQUI
+        String localCriacao = "C:\\Users\\asus note\\Desktop\\"; //MUDE AQUI C:\\Users\\Daniel\\Desktop\\nik.xml 
         String nomeArquivo = "novo.xml";
         String caminhoArquivo = localCriacao+nomeArquivo;
         
@@ -72,10 +72,10 @@ public class MainTemporario {
         System.out.println("Quantos Vertices:");
         entradaNumVertice = input.nextInt();
         
-        for(int i=0; i== entradaNumVertice; i++){           
-            Vertex origemAresta = grafo.addVertex(1);
-            Vertex destinoAresta = grafo.addVertex("2");
-            grafo.addEdge("3", origemAresta, destinoAresta, "Aresta 1");            
+        for(int i=0; i < entradaNumVertice; i++){           
+            Vertex origemAresta = grafo.addVertex(i);
+            /*Vertex destinoAresta = grafo.addVertex("2");
+            grafo.addEdge("3", origemAresta, destinoAresta, "Aresta 1");*/            
         }
         
         //Vertex origemAresta = grafo.addVertex(entradaNumVertice);
