@@ -14,14 +14,16 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class MainTemporario {
+public class AplicacaoMain {
 
     public static void main(String[] args) throws Exception {
         lerGraphXML("C:\\Users\\asus note\\Desktop\\nik.xml"); //MUDE AQUI C:\\Users\\Daniel\\Desktop\\nik.xml
-        criarGraphML();
+        //criarGraphML();
     }
-    
-    public static void lerGraphXML(String caminhoArquivo) throws Exception {
+
+    public static String lerGraphXML(String caminhoArquivo) throws Exception {
+        String sentenca = "";
+        
         Graph grafo = new TinkerGraph(); //cria um grafo do tipo Graph com o contrutor da classe TinkerGraph
         GraphMLReader leitor = new GraphMLReader(grafo); // cria um variavel leitor do tipo GraphMLReader passando como parametro ao construtor o grafo
 
@@ -32,56 +34,57 @@ public class MainTemporario {
         Iterator<Vertex> verticesIterator = vertices.iterator(); // cria o objeto verticesIterator que ira cicular pela collecton
 
         while (verticesIterator.hasNext()) {
-
             Vertex vertice = verticesIterator.next();
             Iterable<Edge> arestas = vertice.getInEdges();
             Iterator<Edge> arestasIterator = arestas.iterator();
 
             while (arestasIterator.hasNext()) {
-
+                
                 Edge aresta = arestasIterator.next();
                 Vertex outVertex = aresta.getOutVertex();
                 Vertex inVertex = aresta.getInVertex();
+                String sentence = null ;
 
                 String person = (String) outVertex.getProperty("name");
                 String knownPerson = (String) inVertex.getProperty("name");
                 int since = (Integer) aresta.getProperty("since");
 
-                String sentence = person + " " + aresta.getLabel() + " " + knownPerson
-                        + " since " + since + ".";
-                System.out.println(sentence);
-
+                sentence = "\n" + person + " " + aresta.getLabel() + " " + knownPerson + " since " + since + ".";
+                sentenca = sentenca + sentence;
+                System.out.println(sentenca);
             }
-
+            
         }
-    }
-    
-    public static void criarGraphML () throws Exception {
         
+        //System.out.println(mensagem);
+        return sentenca;
+    }
+
+    public static void criarGraphML() throws Exception {
+
         String localCriacao = "C:\\Users\\asus note\\Desktop\\"; //MUDE AQUI C:\\Users\\Daniel\\Desktop\\nik.xml 
         String nomeArquivo = "novo.xml";
-        String caminhoArquivo = localCriacao+nomeArquivo;
-        
+        String caminhoArquivo = localCriacao + nomeArquivo;
+
         OutputStream saida = new FileOutputStream(caminhoArquivo);
-        TinkerGraph grafo  = new TinkerGraph();
- 
+        TinkerGraph grafo = new TinkerGraph();
+
         Scanner input = new Scanner(System.in);
         int entradaNumVertice;
-        
+
         System.out.println("-----------------------");
         System.out.println("Quantos Vertices:");
         entradaNumVertice = input.nextInt();
-        
-        for(int i=0; i < entradaNumVertice; i++){           
+
+        for (int i = 0; i < entradaNumVertice; i++) {
             Vertex origemAresta = grafo.addVertex(i);
             /*Vertex destinoAresta = grafo.addVertex("2");
-            grafo.addEdge("3", origemAresta, destinoAresta, "Aresta 1");*/            
+            grafo.addEdge("3", origemAresta, destinoAresta, "Aresta 1");*/
         }
-        
+
         //Vertex origemAresta = grafo.addVertex(entradaNumVertice);
-       // Vertex destinoAresta = grafo.addVertex("2");
-       // grafo.addEdge("3", origemAresta, destinoAresta, "Aresta 1");
- 
+        // Vertex destinoAresta = grafo.addVertex("2");
+        // grafo.addEdge("3", origemAresta, destinoAresta, "Aresta 1");
         GraphMLWriter writer = new GraphMLWriter(grafo);
         writer.outputGraph(saida);
     }
