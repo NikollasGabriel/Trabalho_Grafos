@@ -11,8 +11,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
-//import java.util.Scanner;
+import java.util.List;
 
 public class AplicacaoMain {
 
@@ -47,16 +48,14 @@ public class AplicacaoMain {
 
                 String origem = (String) outVertex.getId();
                 String alvo = (String) inVertex.getId();
-                //int since = (Integer) aresta.getProperty("since");
 
-                sentence = "\n" + origem + " " + "-->" + aresta.getLabel() + " "+ "-->" + alvo + ".";
+                sentence = "\n" + origem + " " + "-->" + aresta.getLabel() + " " + "-->" + alvo + ".";
                 sentenca = sentenca + sentence;
                 System.out.println(sentenca);
             }
 
         }
 
-        //System.out.println(mensagem);
         return sentenca;
     }
 
@@ -65,17 +64,29 @@ public class AplicacaoMain {
         String localCriacao = "C:\\Users\\asus note\\Desktop\\";
         String nomeArquivo = nome + ".xml";
         String caminhoArquivo = localCriacao + nomeArquivo;
+        List <Vertex> vertices = new ArrayList();
         int j = 1;
+        Vertex atual = null;
         
         OutputStream saida = new FileOutputStream(caminhoArquivo);
         TinkerGraph grafo = new TinkerGraph();
 
-        for (int i = 1; i < numeroVertices; i=i+2) {
-
-            Vertex origemAresta = grafo.addVertex(i);
-            Vertex destinoAresta = grafo.addVertex(i + 1);
-            grafo.addEdge(j, origemAresta, destinoAresta, "Aresta " + j);
-            j++;
+        for (int i = 1; i < numeroVertices; i++) {
+            
+            vertices.add(grafo.addVertex(i));
+        }
+        
+        for (Vertex vertice : vertices){
+            
+            if(atual != null){
+             
+                Vertex origemAresta = atual;
+                Vertex destinoAresta = vertice; 
+                grafo.addEdge(j, origemAresta, destinoAresta, "Aresta " + j);
+                j++;
+            }
+            
+            atual = vertice;
         }
         
         GraphMLWriter writer = new GraphMLWriter(grafo);
