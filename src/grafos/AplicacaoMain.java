@@ -1,11 +1,13 @@
 package grafos;
 
-import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
-import com.tinkerpop.blueprints.pgm.util.io.graphml.GraphMLReader;
-import com.tinkerpop.blueprints.pgm.util.io.graphml.GraphMLWriter;
+import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
+import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
+import com.tinkerpop.blueprints.util.io.graphml.GraphMLWriter;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -21,29 +23,35 @@ public class AplicacaoMain {
         //lerGraphXML("C:\\Users\\asus note\\Desktop\\novo3.xml"); //MUDE AQUI C:\\Users\\Daniel\\Desktop\\nik.xml
         //criarGraphML(10, 10 , "novo2");
     }
+    static Graph grafo = new TinkerGraph();
+    static int k = 1;
 
     public static String lerGraphXML(String caminhoArquivo) throws Exception {
         String sentenca = "";
 
-        Graph grafo = new TinkerGraph(); //cria um grafo do tipo Graph com o contrutor da classe TinkerGraph
-        GraphMLReader leitor = new GraphMLReader(grafo); // cria um variavel leitor do tipo GraphMLReader passando como parametro ao construtor o grafo
+        /*Graph*/ grafo = new TinkerGraph();
+        GraphMLReader leitor = new GraphMLReader(grafo);
 
-        InputStream caminho = new BufferedInputStream(new FileInputStream(caminhoArquivo)); // atribui o endereço do arquivo a variavel caminho que sera passada ao leitor
+        InputStream caminho = new BufferedInputStream(new FileInputStream(caminhoArquivo));
         leitor.inputGraph(caminho);
 
-        Iterable<Vertex> vertices = grafo.getVertices(); // organiza os vertices na forma de uma Collection
-        Iterator<Vertex> verticesIterator = vertices.iterator(); // cria o objeto verticesIterator que ira cicular pela collecton
+        Iterable<Vertex> vertices = grafo.getVertices();
+        Iterator<Vertex> verticesIterator = vertices.iterator();
 
         while (verticesIterator.hasNext()) {
             Vertex vertice = verticesIterator.next();
-            Iterable<Edge> arestas = vertice.getInEdges();
+            Iterable<Edge> arestas = vertice.getEdges(Direction.BOTH);
             Iterator<Edge> arestasIterator = arestas.iterator();
 
             while (arestasIterator.hasNext()) {
 
                 Edge aresta = arestasIterator.next();
-                Vertex outVertex = aresta.getOutVertex();
-                Vertex inVertex = aresta.getInVertex();
+
+                Vertex outVertex = aresta.getVertex(Direction.OUT);
+                Vertex inVertex = aresta.getVertex(Direction.IN);
+
+                //Vertex outVertex = aresta.getOutVertex();
+                //Vertex inVertex = aresta.getInVertex();
                 String sentence = null;
 
                 String origem = (String) outVertex.getId();
@@ -59,37 +67,53 @@ public class AplicacaoMain {
         return sentenca;
     }
 
-    public static void criarGraphML(int numeroVertices, int numeroArestas, String nome) throws Exception {
+    public static List<Vertex> criarVertices(int numeroVertices) throws Exception {
+        List<Vertex> vertices = new ArrayList();
 
-        String localCriacao = "C:\\Users\\asus note\\Desktop\\";
-        String nomeArquivo = nome + ".xml";
-        String caminhoArquivo = localCriacao + nomeArquivo;
-        List <Vertex> vertices = new ArrayList();
-        int j = 1;
-        Vertex atual = null;
-        
-        OutputStream saida = new FileOutputStream(caminhoArquivo);
-        TinkerGraph grafo = new TinkerGraph();
-
-        for (int i = 1; i < numeroVertices; i++) {
-            
+        for (int i = 1; i <= numeroVertices; i++) {
             vertices.add(grafo.addVertex(i));
         }
-        
-        for (Vertex vertice : vertices){
-            
-            if(atual != null){
-             
-                Vertex origemAresta = atual;
-                Vertex destinoAresta = vertice; 
-                grafo.addEdge(j, origemAresta, destinoAresta, "Aresta " + j);
-                j++;
+        return vertices;
+    }
+
+    public static Edge criarAresta(String nome, String origemVertice, String alvoVertice) throws Exception {
+
+        Iterable<Vertex> vertices = grafo.getVertices();
+        Iterator<Vertex> verticesIterator = vertices.iterator();
+        Vertex outVertice = null;
+        Vertex inVertice = null;
+        Edge aresta;
+
+        if (origemVertice.equals(alvoVertice)) {
+            while (verticesIterator.hasNext()) {
+                Vertex vertice = verticesIterator.next();
+                if (((String) vertice.getId()).equals(origemVertice)) {
+                    outVertice = vertice;
+                    inVertice = vertice;
+                    grafo.addEdge(k, outVertice, inVertice, nome);
+                    k++;
+                }
             }
-            
-            atual = vertice;
+        } else {
+            while (verticesIterator.hasNext()) {
+                Vertex vertice = verticesIterator.next();
+                if (((String) vertice.getId()).equals(origemVertice)) {
+                    outVertice = vertice;
+                } else if (((String) vertice.getId()).equals(alvoVertice)) {
+                    inVertice = vertice;
+                }
+            }
         }
-        
+        aresta = grafo.addEdge(k, outVertice, inVertice, nome);
+        k++;
+        return aresta;
+    }
+
+    public static void criarGraphML(String caminhoArquivo) throws Exception {
+
+        OutputStream saida = new FileOutputStream(caminhoArquivo);
         GraphMLWriter writer = new GraphMLWriter(grafo);
+        writer.setNormalize(true);
         writer.outputGraph(saida);
     }
 }
