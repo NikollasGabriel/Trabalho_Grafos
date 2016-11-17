@@ -1,12 +1,29 @@
 package Interface;
 
+import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
+import static grafos.AplicacaoMain.contaVertices;
 import static grafos.AplicacaoMain.lerGraphXML;
-import java.io.File;
+import static grafos.AplicacaoMain.obterVertices;
+import static grafos.AplicacaoMain.obterArestas;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 public class AbrirGrafo extends javax.swing.JFrame {
+
+    private DefaultListModel modelVertices = new DefaultListModel();
+    private DefaultTableModel modelArestas = new DefaultTableModel();
+    private Iterable<Vertex> vertices;
+    private Iterable<Edge> arestas;
 
     public AbrirGrafo() {
         initComponents();
@@ -19,20 +36,19 @@ public class AbrirGrafo extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        GrauVertice = new javax.swing.JButton();
+        AdjacenteVertice = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        listaArestas = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        AdjacenteAresta = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listaVertices = new javax.swing.JList<>();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,10 +75,6 @@ public class AbrirGrafo extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton3.setText("Selecionar Arquivo");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -72,47 +84,67 @@ public class AbrirGrafo extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Caminho do Arquivo");
+        jLabel1.setText("Caminho do Arquivo:");
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton4.setText("Grau");
+        GrauVertice.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        GrauVertice.setText("Grau");
+        GrauVertice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GrauVerticeActionPerformed(evt);
+            }
+        });
 
-        jButton5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton5.setText("Adjacentes");
-
-        jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton6.setText("Incidentes");
+        AdjacenteVertice.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        AdjacenteVertice.setText("Adjacência");
+        AdjacenteVertice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdjacenteVerticeActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("                    Vertices do Grafo");
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        listaArestas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        listaArestas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
                 "Nome", "Vertice Origem", "Vertice Alvo"
             }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(listaArestas);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("                             Arestas do Grafo");
 
-        jButton7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton7.setText("Incidente");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        AdjacenteAresta.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        AdjacenteAresta.setText("Adjacência");
+        AdjacenteAresta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                AdjacenteArestaActionPerformed(evt);
             }
         });
 
-        jButton8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton8.setText("Adjacente");
-
         jButton9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton9.setText("Grau do Grafo");
+        jButton9.setText("Ordem do Grafo");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        listaVertices.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jScrollPane3.setViewportView(listaVertices);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,22 +156,16 @@ public class AbrirGrafo extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jButton4)
+                                .addComponent(GrauVertice)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton5)))
+                                .addComponent(AdjacenteVertice))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton8))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AdjacenteAresta)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -151,10 +177,13 @@ public class AbrirGrafo extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1))
-                            .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 7, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -164,28 +193,28 @@ public class AbrirGrafo extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton9)
-                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextField2)
+                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton6)
-                    .addComponent(jButton5)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                    .addComponent(GrauVertice)
+                    .addComponent(AdjacenteVertice)
+                    .addComponent(AdjacenteAresta))
+                .addGap(30, 30, 30)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -200,29 +229,146 @@ public class AbrirGrafo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
         String caminhoArquivo = jTextField1.getText();
         try {
-            jTextArea1.setText(lerGraphXML(caminhoArquivo));
+            lerGraphXML(caminhoArquivo);
+
+            try {
+                vertices = obterVertices();
+                modelVertices.removeAllElements();
+                listaVertices.setModel(modelVertices);
+                Iterator<Vertex> verticesIterator = vertices.iterator();
+                while (verticesIterator.hasNext()) {
+                    modelVertices.addElement(verticesIterator.next());
+                }
+            } catch (Exception ex) {
+                throw ex;
+            }
+
+            try {
+                arestas = obterArestas();
+                modelArestas = (DefaultTableModel) listaArestas.getModel();
+                Iterator<Edge> arestasIterator = arestas.iterator();
+
+                while (arestasIterator.hasNext()) {
+                    Edge aresta = arestasIterator.next();
+                    Object[] row = {aresta.getLabel(), aresta.getVertex(Direction.OUT), aresta.getVertex(Direction.IN)};
+                    modelArestas.addRow(row);
+                }
+            } catch (Exception ex) {
+                throw ex;
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(AbrirGrafo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-    
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       JFileChooser chooser = new JFileChooser();
-       chooser.showOpenDialog(null);
-       File arquivo = chooser.getSelectedFile();
-       String caminhoArquivo =  arquivo.getAbsolutePath();
-       jTextField1.setText(caminhoArquivo);
+
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filtroXML = new FileNameExtensionFilter("Arquivos XML", "xml");
+        chooser.addChoosableFileFilter(filtroXML);
+        chooser.setAcceptAllFileFilterUsed(false);
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            String caminhoArquivo = chooser.getSelectedFile().getAbsolutePath();
+            jTextField1.setText(caminhoArquivo);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+
+        int numeroVertices = contaVertices();
+        jTextField2.setText("" + numeroVertices);
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void GrauVerticeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GrauVerticeActionPerformed
+
+        int indice = listaVertices.getSelectedIndex() + 1;
+        int grauEmissao = 0;
+        int grauRecepcao = 0;
+
+        if ((indice > 0) && (vertices.iterator().hasNext())) {
+            Graph auxiliar = new TinkerGraph();
+            auxiliar.addVertex(indice);
+            Iterator<Vertex> verticesIterator = vertices.iterator();
+            while (verticesIterator.hasNext()) {
+                Vertex vertice = verticesIterator.next();
+                if (auxiliar.getVertex(indice).getId().equals(vertice.getId())) {
+                    Iterator<Edge> arestasIterator = arestas.iterator();
+                    while (arestasIterator.hasNext()) {
+                        Edge aresta = arestasIterator.next();
+                        if (aresta.getVertex(Direction.OUT).equals(vertice)) {
+                            grauEmissao++;
+                        }
+                        if (aresta.getVertex(Direction.IN).equals(vertice)) {
+                            grauRecepcao++;
+                        }
+                    }
+                }
+            }
+            String saida = "Vertice[" + indice + "]:" + "\n" + "Grau de emissao:" + grauEmissao + "\n" + "Grau de recepção:" + grauRecepcao;
+            JOptionPane.showMessageDialog(null, saida);
+        } else if (jTextField1.getText().equals("")) {
+            String saida = "Abra um grafo antes de clicar nessa opção!";
+            JOptionPane.showMessageDialog(null, saida);
+        } else if (indice <= 0) {
+            String saida = "Escolha um vertice antes!";
+            JOptionPane.showMessageDialog(null, saida);
+        }
+    }//GEN-LAST:event_GrauVerticeActionPerformed
+
+    private void AdjacenteVerticeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdjacenteVerticeActionPerformed
+
+        String saida = "São adjacentes:\n";
+        Iterator<Edge> arestasIterator = arestas.iterator();
+        Edge aresta;
+
+        while (arestasIterator.hasNext()) {
+            aresta = arestasIterator.next();
+
+            if (aresta.getVertex(Direction.OUT).equals(aresta.getVertex(Direction.IN))) {
+                saida = saida + "A aresta " + aresta.getLabel() + " é um laço no vértice " + aresta.getVertex(Direction.OUT) + "\n";
+            } else {
+                saida = saida + aresta.getVertex(Direction.OUT) + " e " + aresta.getVertex(Direction.IN) + "\n";
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, saida);
+    }//GEN-LAST:event_AdjacenteVerticeActionPerformed
+
+    private void AdjacenteArestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdjacenteArestaActionPerformed
+
+        Iterable<Edge> arestas1 = obterArestas();
+        Iterable<Edge> arestas2 = obterArestas();
+        Iterator<Edge> arestasIterator1 = arestas1.iterator();
+        Iterator<Edge> arestasIterator2 = arestas2.iterator();
+        Edge aresta1;
+        Edge aresta2;
+        String saida = "São adjacentes:\n";
+
+        while (arestasIterator1.hasNext()) {
+            aresta1 = arestasIterator1.next();
+            System.out.println("1");
+            while (arestasIterator2.hasNext()) {
+                aresta2 = arestasIterator2.next();
+                System.out.println("2");
+                if ((aresta1.getVertex(Direction.IN).equals(aresta2.getVertex(Direction.OUT)))) {
+                    saida = saida + "As arestas " + aresta1.getLabel() + " e " + aresta2.getLabel() + " são adjacentes em " + aresta2.getVertex(Direction.OUT) + "\n";
+                    System.out.println("3");
+                } else {
+                    System.out.println("4");
+                    //saida = saida + "As arestas " + aresta1.getLabel() + " e " + aresta2.getLabel() + " são adjacentes em " + aresta2.getVertex(Direction.OUT) + "\n";
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(null, saida);
+    }//GEN-LAST:event_AdjacenteArestaActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -257,22 +403,22 @@ public class AbrirGrafo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AdjacenteAresta;
+    private javax.swing.JButton AdjacenteVertice;
+    private javax.swing.JButton GrauVertice;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable listaArestas;
+    private javax.swing.JList<String> listaVertices;
     // End of variables declaration//GEN-END:variables
+
 }
