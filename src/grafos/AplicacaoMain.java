@@ -6,6 +6,9 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLWriter;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -15,6 +18,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 
 public class AplicacaoMain {
 
@@ -142,5 +146,11 @@ return sentenca;*/
         }
        
         return numeroArestas;
+    }
+    
+    public void paint(Graphics g){
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.RED);
+        g2.drawOval(100, 100, 100, 100);
     }
 }

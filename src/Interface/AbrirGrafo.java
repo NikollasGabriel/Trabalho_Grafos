@@ -210,10 +210,11 @@ public class AbrirGrafo extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(GrauVertice)
-                    .addComponent(AdjacenteVertice)
-                    .addComponent(AdjacenteAresta))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AdjacenteAresta)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(GrauVertice)
+                        .addComponent(AdjacenteVertice)))
                 .addGap(30, 30, 30)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -351,20 +352,21 @@ public class AbrirGrafo extends javax.swing.JFrame {
         Edge aresta1;
         Edge aresta2;
         String saida = "São adjacentes:\n";
+        int i = 1;
 
         while (arestasIterator1.hasNext()) {
             aresta1 = arestasIterator1.next();
-            System.out.println("1");
+            System.out.println(i);
             while (arestasIterator2.hasNext()) {
                 aresta2 = arestasIterator2.next();
-                System.out.println("2");
-                if ((aresta1.getVertex(Direction.IN).equals(aresta2.getVertex(Direction.OUT)))) {
+                if ((aresta1.getVertex(Direction.IN).equals(aresta2.getVertex(Direction.IN)))) {
+                    i++;
                     saida = saida + "As arestas " + aresta1.getLabel() + " e " + aresta2.getLabel() + " são adjacentes em " + aresta2.getVertex(Direction.OUT) + "\n";
-                    System.out.println("3");
                 } else {
-                    System.out.println("4");
+                    //i++;
                     //saida = saida + "As arestas " + aresta1.getLabel() + " e " + aresta2.getLabel() + " são adjacentes em " + aresta2.getVertex(Direction.OUT) + "\n";
                 }
+                //i++;
             }
         }
         JOptionPane.showMessageDialog(null, saida);
