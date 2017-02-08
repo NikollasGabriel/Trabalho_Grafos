@@ -13,9 +13,6 @@ import java.util.Set;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
-import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
-import com.tinkerpop.blueprints.util.io.graphml.GraphMLWriter;
 
 public class Dijkstra {
 

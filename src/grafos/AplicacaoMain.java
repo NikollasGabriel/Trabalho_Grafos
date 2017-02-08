@@ -55,6 +55,24 @@ public class AplicacaoMain {
         for (Vertex vertex : path) {
             System.out.println(vertex);
         }*/
+        
+        /*criarVertices(7);
+        criarArestaValorada("1", "4", "1", 5);
+        criarArestaValorada("2", "4", "2", 9);
+        criarArestaValorada("3", "4", "5", 15);
+        criarArestaValorada("4", "4", "6", 6);
+        criarArestaValorada("5", "1", "2", 7);
+        criarArestaValorada("6", "2", "3", 8);
+        criarArestaValorada("7", "2", "5", 7);
+        criarArestaValorada("8", "5", "4", 5);
+        criarArestaValorada("9", "5", "7", 9);
+        criarArestaValorada("10", "6", "5", 8);
+        criarArestaValorada("11", "6", "7", 11);
+        criarGraphMLValorado("C:\\Users\\asus note\\Desktop\\teste8.xml");*/
+        lerGraphXML("C:\\Users\\asus note\\Desktop\\teste8.xml");
+        Prim p = new Prim();
+        p.getArvoreGeradoraMinimaPrim(grafo, grafo.getVertex(4));
+        
     }
 
     public static void lerGraphXML(String caminhoArquivo) throws Exception {
