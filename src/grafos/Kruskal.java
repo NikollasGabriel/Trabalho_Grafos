@@ -24,6 +24,7 @@ public class Kruskal {
     public void getArvoreGeradoraMinimaKruskal(Graph grafo) {
 
         arestas.addAll((Collection) grafo.getEdges());
+        arvores.addAll((Collection) grafo.getVertices());
 
         while (!arestas.isEmpty()) {
             for (Edge e : arestas) {
@@ -46,22 +47,26 @@ public class Kruskal {
             if (menorAresta != null) {
                 if (!AGM.contains(menorAresta.getVertex(Direction.OUT))) {
                     AGM.add(menorAresta.getVertex(Direction.OUT));
-                    /*if (!AGMArestas.contains(grafo.getEdge(menorAresta.getId()))) {
-                        AGMArestas.add(grafo.getEdge(menorAresta.getId()));
-                    }*/
-                }
-                if (!AGM.contains(menorAresta.getVertex(Direction.IN))) {
-                    AGM.add(menorAresta.getVertex(Direction.IN));
+                    arvores.remove(menorAresta.getVertex(Direction.OUT));
                     if (!AGMArestas.contains(grafo.getEdge(menorAresta.getId()))) {
                         AGMArestas.add(grafo.getEdge(menorAresta.getId()));
                     }
                 }
-                /*if(){
-                
-                }*/
-            }
-            //AGMArestas.add(grafo.getEdge(menorAresta.getId()));
 
+                if (!AGM.contains(menorAresta.getVertex(Direction.IN))) {
+                    AGM.add(menorAresta.getVertex(Direction.IN));
+                    arvores.remove(menorAresta.getVertex(Direction.IN));
+                    if (!AGMArestas.contains(grafo.getEdge(menorAresta.getId()))) {
+                        AGMArestas.add(grafo.getEdge(menorAresta.getId()));
+                    }
+                }
+
+//                if (arvores.contains(menorAresta.getVertex(Direction.OUT))) {
+//                    if (arvores.contains(menorAresta.getVertex(Direction.IN))) {
+//                        AGMArestas.add(grafo.getEdge(menorAresta.getId()));
+//                    }
+//                }
+            }
         }
         System.out.println(AGM);
         System.out.println(AGMArestas);

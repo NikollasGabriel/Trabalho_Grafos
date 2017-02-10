@@ -70,7 +70,7 @@ public class AplicacaoMain {
         criarArestaValorada("11", "6", "7", 11);
         criarGraphMLValorado("C:\\Users\\asus note\\Desktop\\teste8.xml");*/
         
-        lerGraphXML("C:\\Users\\asus note\\Desktop\\teste8.xml");
+        lerGraphXML("C:\\Users\\asus note\\Desktop\\teste10.xml");
         /*Dijkstra d = new Dijkstra(grafo);
         d.execute(grafo.getVertex(1));
         LinkedList<Vertex> path = d.getPath(grafo.getVertex(7));
@@ -82,8 +82,11 @@ public class AplicacaoMain {
         /*Prim p = new Prim();
         p.getArvoreGeradoraMinimaPrim(grafo);*/
         
-        Kruskal kruskal = new Kruskal();
-        kruskal.getArvoreGeradoraMinimaKruskal(grafo);
+//        Kruskal kruskal = new Kruskal();
+//        kruskal.getArvoreGeradoraMinimaKruskal(grafo);
+
+          Largura l = new Largura();
+          l.BuscaGrafo(grafo);
         
     }
 
