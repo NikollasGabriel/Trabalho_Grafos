@@ -6,9 +6,14 @@ import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import static grafos.AplicacaoMain.contaVertices;
+import static grafos.AplicacaoMain.kruskal;
+import static grafos.AplicacaoMain.largura;
 import static grafos.AplicacaoMain.lerGraphXML;
+import static grafos.AplicacaoMain.limparGrafo;
 import static grafos.AplicacaoMain.obterVertices;
 import static grafos.AplicacaoMain.obterArestas;
+import static grafos.AplicacaoMain.prim;
+import static grafos.AplicacaoMain.profundidade;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,6 +54,11 @@ public class AbrirGrafo extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         listaVertices = new javax.swing.JList<>();
         jTextField2 = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -111,11 +121,11 @@ public class AbrirGrafo extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "Vertice Origem", "Vertice Alvo"
+                "Nome", "Origem", "Destino", "Peso"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -145,6 +155,41 @@ public class AbrirGrafo extends javax.swing.JFrame {
 
         listaVertices.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jScrollPane3.setViewportView(listaVertices);
+
+        jButton4.setText("Dijkstra");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Kruskal");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Prim");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("Profundidade");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setText("Largura");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,12 +223,22 @@ public class AbrirGrafo extends javax.swing.JFrame {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(AdjacenteAresta)
-                                .addGap(157, 157, 157)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton6)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -211,19 +266,31 @@ public class AbrirGrafo extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(AdjacenteAresta)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(AdjacenteAresta)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(GrauVertice)
                         .addComponent(AdjacenteVertice)))
-                .addGap(30, 30, 30)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            limparGrafo();
+        } catch (Exception ex) {
+            Logger.getLogger(GerarGrafo.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Principal tela = new Principal();
         tela.setVisible(true);
         this.dispose();
@@ -254,8 +321,13 @@ public class AbrirGrafo extends javax.swing.JFrame {
 
                 while (arestasIterator.hasNext()) {
                     Edge aresta = arestasIterator.next();
-                    Object[] row = {aresta.getLabel(), aresta.getVertex(Direction.OUT), aresta.getVertex(Direction.IN)};
-                    modelArestas.addRow(row);
+                    if (aresta.getProperty("weight") != null) {
+                        Object[] row = {aresta.getLabel(), aresta.getVertex(Direction.OUT), aresta.getVertex(Direction.IN), aresta.getProperty("weight")};
+                        modelArestas.addRow(row);
+                    } else {
+                        Object[] row = {aresta.getLabel(), aresta.getVertex(Direction.OUT), aresta.getVertex(Direction.IN)};
+                        modelArestas.addRow(row);
+                    }
                 }
             } catch (Exception ex) {
                 throw ex;
@@ -356,7 +428,6 @@ public class AbrirGrafo extends javax.swing.JFrame {
 
         while (arestasIterator1.hasNext()) {
             aresta1 = arestasIterator1.next();
-            System.out.println(i);
             while (arestasIterator2.hasNext()) {
                 aresta2 = arestasIterator2.next();
                 if ((aresta1.getVertex(Direction.IN).equals(aresta2.getVertex(Direction.IN)))) {
@@ -371,6 +442,53 @@ public class AbrirGrafo extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(null, saida);
     }//GEN-LAST:event_AdjacenteArestaActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if (jTextField1.getText().equals("")) {
+            String saida = "Abra um grafo antes de clicar nessa opção!";
+            JOptionPane.showMessageDialog(null, saida);
+        }else{
+            profundidade();
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        if (jTextField1.getText().equals("")) {
+            String saida = "Abra um grafo antes de clicar nessa opção!";
+            JOptionPane.showMessageDialog(null, saida);
+        }else{
+            largura();
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        if (jTextField1.getText().equals("")) {
+            String saida = "Abra um grafo antes de clicar nessa opção!";
+            JOptionPane.showMessageDialog(null, saida);
+        }else{
+            prim();
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if (jTextField1.getText().equals("")) {
+            String saida = "Abra um grafo antes de clicar nessa opção!";
+            JOptionPane.showMessageDialog(null, saida);
+        }else{
+            kruskal();
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if (jTextField1.getText().equals("")) {
+            String saida = "Abra um grafo antes de clicar nessa opção!";
+            JOptionPane.showMessageDialog(null, saida);
+        }else{
+            AbrirDijkstra dijkstra = new AbrirDijkstra();
+            dijkstra.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -411,6 +529,11 @@ public class AbrirGrafo extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

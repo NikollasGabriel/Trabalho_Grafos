@@ -7,6 +7,7 @@ import com.tinkerpop.blueprints.Vertex;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class Kruskal {
 
@@ -68,7 +69,9 @@ public class Kruskal {
 //                }
             }
         }
-        System.out.println(AGM);
-        System.out.println(AGMArestas);
+        //System.out.println(AGM);
+        String saida = "Vertices:" + AGM + "\n" + "Arestas:" +AGMArestas;
+        JOptionPane.showMessageDialog(null, saida);
+        //System.out.println(AGMArestas);
     }
 }

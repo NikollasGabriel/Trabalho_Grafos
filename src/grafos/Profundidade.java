@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class Profundidade {
 
@@ -59,7 +60,9 @@ public class Profundidade {
             }
         }
         
-        System.out.println(verticesFinal);
+//        System.out.println(verticesFinal);
+        String saida = "Vertices:" + verticesFinal;
+        JOptionPane.showMessageDialog(null, saida);
 
     }
 

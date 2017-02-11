@@ -7,6 +7,7 @@ import com.tinkerpop.blueprints.Vertex;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class Largura {
 
@@ -60,6 +61,8 @@ public class Largura {
             
             vertice = verticesMarcados.get(0);
         }
-        System.out.println(verticesFinal);
+//        System.out.println(verticesFinal);
+        String saida = "Vertices:" + verticesFinal;
+        JOptionPane.showMessageDialog(null, saida);
     }
 }

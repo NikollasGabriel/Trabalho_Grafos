@@ -20,8 +20,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 public class AplicacaoMain {
 
@@ -29,7 +31,7 @@ public class AplicacaoMain {
     static int k = 1;
 
     public static void main(String[] args) throws Exception {
-      
+
         /*Dijkstra d = new Dijkstra(grafo);
         d.execute(grafo.getVertex(1));
         LinkedList<Vertex> path = d.getPath(grafo.getVertex(7));
@@ -37,19 +39,34 @@ public class AplicacaoMain {
         for (Vertex vertex : path) {
             System.out.println(vertex);
         }*/
-        
-        /*Prim p = new Prim();
-        p.getArvoreGeradoraMinimaPrim(grafo);*/
-        
-//        Kruskal kruskal = new Kruskal();
-//        kruskal.getArvoreGeradoraMinimaKruskal(grafo);
+    }
 
-//          Largura l = new Largura();
-//          l.BuscaGrafo(grafo);
+    public static void dijkstra(String origem ,String destino) {
+        Dijkstra d = new Dijkstra(grafo);
+        d.execute(grafo.getVertex(origem));
+        LinkedList<Vertex> path = d.getPath(grafo.getVertex(destino));
+        String saida = "Menor caminho:" + path;
+        JOptionPane.showMessageDialog(null, saida);
+    }
 
-//            Profundidade p = new Profundidade();
-//            p.BuscaGrafo(grafo);
-        
+    public static void prim() {
+        Prim p = new Prim();
+        p.getArvoreGeradoraMinimaPrim(grafo);
+    }
+
+    public static void kruskal() {
+        Kruskal k = new Kruskal();
+        k.getArvoreGeradoraMinimaKruskal(grafo);
+    }
+
+    public static void largura() {
+        Largura l = new Largura();
+        l.BuscaGrafo(grafo);
+    }
+
+    public static void profundidade() {
+        Profundidade p = new Profundidade();
+        p.BuscaGrafo(grafo);
     }
 
     public static void lerGraphXML(String caminhoArquivo) throws Exception {
@@ -93,6 +110,10 @@ while (verticesIterator.hasNext()) {
 
 return sentenca;*/
 //</editor-fold>
+    }
+
+    public static void limparGrafo() throws Exception {
+        grafo = new TinkerGraph();
     }
 
     public static void criarGraphML(String caminhoArquivo) throws Exception {
@@ -161,13 +182,14 @@ return sentenca;*/
         return aresta;
     }
 
-    public static Edge criarArestaValorada(String nome, String origemVertice, String alvoVertice, int peso) throws Exception {
+    public static Edge criarArestaValorada(String nome, String origemVertice, String alvoVertice, String pesoTela) throws Exception {
 
         Iterable<Vertex> vertices = grafo.getVertices();
         Iterator<Vertex> verticesIterator = vertices.iterator();
         Vertex outVertice = null;
         Vertex inVertice = null;
         Edge aresta;
+        int peso = Integer.parseInt(pesoTela);
 
         if (origemVertice.equals(alvoVertice)) {
             while (verticesIterator.hasNext()) {
