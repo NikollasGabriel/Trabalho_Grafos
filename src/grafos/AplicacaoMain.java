@@ -20,7 +20,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,47 +29,7 @@ public class AplicacaoMain {
     static int k = 1;
 
     public static void main(String[] args) throws Exception {
-
-        /*criarVertices(11);
-        criarArestaValorada("1", "1", "2", 85);
-        criarArestaValorada("2", "1", "3", 217);
-        criarArestaValorada("3", "1", "5", 173);
-        criarArestaValorada("4", "3", "7", 186);
-        criarArestaValorada("5", "3", "8", 103);
-        criarArestaValorada("6", "4", "8", 183);
-        criarArestaValorada("7", "6", "9", 250);
-        criarArestaValorada("8", "9", "10", 84);
-        criarArestaValorada("9", "8", "10", 167);
-        criarArestaValorada("10", "5", "10", 502);
-        criarArestaValorada("11", "10", "11", 40);
-        criarArestaValorada("12", "2", "11", 600);
-        
-        criarGraphMLValorado("C:\\Users\\asus note\\Desktop\\teste7.xml");
-
-        lerGraphXML("C:\\Users\\asus note\\Desktop\\teste7.xml");
-        Dijkstra d = new Dijkstra(grafo);
-        d.execute(grafo.getVertex(1));
-        LinkedList<Vertex> path = d.getPath(grafo.getVertex(11));
-        
-        for (Vertex vertex : path) {
-            System.out.println(vertex);
-        }*/
-        
-        /*criarVertices(7);
-        criarArestaValorada("1", "4", "1", 5);
-        criarArestaValorada("2", "4", "2", 9);
-        criarArestaValorada("3", "4", "5", 15);
-        criarArestaValorada("4", "4", "6", 6);
-        criarArestaValorada("5", "1", "2", 7);
-        criarArestaValorada("6", "2", "3", 8);
-        criarArestaValorada("7", "2", "5", 7);
-        criarArestaValorada("8", "5", "4", 5);
-        criarArestaValorada("9", "5", "7", 9);
-        criarArestaValorada("10", "6", "5", 8);
-        criarArestaValorada("11", "6", "7", 11);
-        criarGraphMLValorado("C:\\Users\\asus note\\Desktop\\teste8.xml");*/
-        
-        lerGraphXML("C:\\Users\\asus note\\Desktop\\teste10.xml");
+      
         /*Dijkstra d = new Dijkstra(grafo);
         d.execute(grafo.getVertex(1));
         LinkedList<Vertex> path = d.getPath(grafo.getVertex(7));
@@ -85,8 +44,11 @@ public class AplicacaoMain {
 //        Kruskal kruskal = new Kruskal();
 //        kruskal.getArvoreGeradoraMinimaKruskal(grafo);
 
-          Largura l = new Largura();
-          l.BuscaGrafo(grafo);
+//          Largura l = new Largura();
+//          l.BuscaGrafo(grafo);
+
+//            Profundidade p = new Profundidade();
+//            p.BuscaGrafo(grafo);
         
     }
 

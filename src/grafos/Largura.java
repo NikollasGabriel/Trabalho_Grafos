@@ -61,21 +61,5 @@ public class Largura {
             vertice = verticesMarcados.get(0);
         }
         System.out.println(verticesFinal);
-
-//<editor-fold defaultstate="collapsed" desc="comment">
-/*while (!verticesFinal.containsAll((Collection) grafo.getVertices())) {
-
-vertice.getVertices(Direction.OUT).forEach(vertices::add);
-
-if (!(vertices.isEmpty())) {
-vertice.getVertices(Direction.OUT).forEach(verticesMarcados::add);
-if (verticesFinal.contains(vertice)) {
-verticesFinal.add(verticesMarcados.get(0));
-verticesMarcados.remove(0);
-}
-}
-vertice = verticesMarcados.get(0);
-}*/
-//</editor-fold>
     }
 }
